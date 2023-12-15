@@ -1,0 +1,8 @@
+0a, What is your favourite colour? a) blue b) red c) yellow d) purple, d
+0b, What is the value of the third digit? $I1[0-100] $I2[0-100] $I3[0-100], $I3
+0c, What is $I1[0-100] + $I2[0-100] ?, $I1 + $I2
+0c, What is $F1[0-100] * $F2[0-100] ?, $F1 * $F2
+0c, What is $I1[0-100] + $I2[0-100] ?, $I1 + $I2
+0c, What is $F1[0-100] * $F2[0-100] ?, $F1 * $F2
+0d, What is $F1[0-100] + $F2[0-100] ?, $F1 + $F2
+0e, What is $F1[0-100] * $F2[0-100] ?, $F1 * $F2
