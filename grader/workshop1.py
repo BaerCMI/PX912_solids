@@ -163,9 +163,9 @@ class Workshop1:
 
     
     def check3a(self, ifts):
-        alpha, L = sym.symbols('alpha, L')
-        if ifts == Matrix([[0, 0.5*alpha/L, 0], 
-                           [0.5*alpha/L, 0, 0],
+        alpha = sym.symbols('alpha')
+        if ifts == Matrix([[0, 0.5*alpha, 0], 
+                           [0.5*alpha, 0, 0],
                            [0, 0, 0]]):
             print("\033[1;32m Correct!")
             self.q3a = True           
