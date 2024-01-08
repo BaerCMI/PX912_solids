@@ -105,6 +105,12 @@ class Workshop1:
                                              [2.0, 2.0]]):
             print("\033[1;32m Correct!")
             self.q2b = True
+        elif np.isclose(deformed_corners,np.array([[4.0, 2.0],
+                                                 [7.0, 5.0],
+                                                 [5.0, 5.0],
+                                                 [2.0, 2.0]])):
+            print("\033[1;32m Correct!")
+            self.q2b = True
         else:
             print("\033[0;31m Incorrect.")
             print("Note: if you've modified the order of the square_corners list, you may be getting an error due to the order of your points.")
@@ -169,6 +175,11 @@ class Workshop1:
                            [0, 0, 0]]):
             print("\033[1;32m Correct!")
             self.q3a = True           
+        elif ifts == Matrix([[0, sym.Rational(1,2)*alpha, 0], 
+                           [sym.Rational(1,2)*alpha, 0, 0],
+                           [0, 0, 0]]):
+            print("\033[1;32m Correct!")
+            self.q3a = True           
         else:
             print("\033[0;31m Incorrect.")
             self.q3a = False   
@@ -190,6 +201,30 @@ class Workshop1:
     def hint3c(self):
         print("This should be very similar to a previous problem.")
         print("Simply translate the points that you are given.")
+      
+    def check3c(self, deformed_corners):
+        if deformed_corners == [[2.5, 1.0],
+                                [-0.5, -1.0],
+                                [-2.5, -1.0],
+                                [0.5, 1.0]]:
+            print("\033[1;32m Correct!")
+            self.q3c = True
+        elif deformed_corners == sym.Matrix([[2.5, 1.0],
+                                            [-0.5, -1.0],
+                                            [-2.5, -1.0],
+                                            [0.5, 1.0]]):
+            print("\033[1;32m Correct!")
+            self.q3c = True
+        elif np.isclose(deformed_corners,np.array([[2.5, 1.0],
+                                            [-0.5, -1.0],
+                                            [-2.5, -1.0],
+                                            [0.5, 1.0]])):
+            print("\033[1;32m Correct!")
+            self.q3c = True
+        else:
+            print("\033[0;31m Incorrect.")
+            print("Note: if you've modified the order of the square_corners list, you may be getting an error due to the order of your points.")
+            self.q3c = False                 
     # RESULTS    ------------------------------------------------------
     
     def results(self):
@@ -200,7 +235,8 @@ class Workshop1:
                        self.q2b,
                        self.q2c, 
                        self.q3a, 
-                       self.q3b]
+                       self.q3b, 
+                       self.q3c]
         
         names = ["Question 1a",
                  "Question 1b",
@@ -209,14 +245,15 @@ class Workshop1:
                  "Question 2b",
                  "Question 2c",
                  "Question 3a",
-                 "Question 3b"]
+                 "Question 3b",
+                 "Question 3c"]
         
-        coupled = [(performance[i], names[i]) for i in range(8)]
+        coupled = [(performance[i], names[i]) for i in range(9)]
         
         total_score = sum(performance)
         
-        print(f"Your score for this assignment: {total_score}/8")
-        if total_score == 8:
+        print(f"Your score for this assignment: {total_score}/9")
+        if total_score == 9:
             print("Excellent work!")
         else:
             print("The following questions have yet to be answered correctly:")
