@@ -1,5 +1,4 @@
 import sympy as sym
-import numpy as np
 from sympy.matrices import Matrix, eye, zeros, ones, diag, MatMul
 
 class Workshop1:
@@ -88,27 +87,15 @@ class Workshop1:
         print("The deformation expression can be thought of as a translation")
         print("rule. The input in undeformed coordinates will be the output")
         print("in deformed coordinates.")
-        print("Another way to go about it is to apply the deformation gradient,")
-        print("but the change of the origin during the deformation also needs")
+        print("Applying the deformation gradient will account for shape changes,")
+        print("but the translation of the origin during the deformation also needs")
         print("to be taken into account.")
 
     def check2b(self, deformed_corners):
-        if deformed_corners == [[4.0, 2.0],
-                                [7.0, 5.0],
-                                [5.0, 5.0],
-                                [2.0, 2.0]]:
-            print("\033[1;32m Correct!")
-            self.q2b = True
-        elif deformed_corners == sym.Matrix([[4.0, 2.0],
+        if deformed_corners == sym.Matrix([[4.0, 2.0],
                                              [7.0, 5.0],
                                              [5.0, 5.0],
-                                             [2.0, 2.0]]):
-            print("\033[1;32m Correct!")
-            self.q2b = True
-        elif np.isclose(deformed_corners,np.array([[4.0, 2.0],
-                                                 [7.0, 5.0],
-                                                 [5.0, 5.0],
-                                                 [2.0, 2.0]])):
+                                             [2.0, 2.0]]).T:
             print("\033[1;32m Correct!")
             self.q2b = True
         else:
@@ -118,35 +105,35 @@ class Workshop1:
 
     
     def hint2c(self,):
-        print("This question requires linear algebra. NumPy is your friend here.")
-        print("Array multiplication can be performed with np.dot(A, x), where A ")
-        print("is a matrix and x is a vector.")
+        print("This question requires application of the deformation gradient to E_1 and E_2,")
+        print("but e_1 and e_2 require the inverse treatment.")
+        print("Sympy provides the .inv() method.")
 
         
     def check2c(self, e1, e2, E1, E2):
         ce1, ce2, cE1, cE2 = False, False, False, False
-        if e1[0]==1 and e1[1]==0:
+        if e1 == sym.Matrix([1.0,0.0]):
             ce1=True
         else:
             ce1=False
             print("\033[0;31m def_e1 is incorrect.")
             self.q2b = False 
            
-        if e2[0]==-1 and e2[1]==-2/3:
+        if e2 == sym.Matrix([-1.0,-2/3]):
             ce2=True
         else:
             ce2=False
             print("\033[0;31m def_e2 is incorrect.")
             self.q2b = False 
                     
-        if E1[0]==1 and E1[1]==0:
+        if E1 == sym.Matrix([1.0,0.0]):
             cE1=True
         else:
             cE1=False   
             print("\033[0;31m def_E1 is incorrect.")
             self.q2b = False 
             
-        if E2[0]==-1.5 and E2[1]==-1.5:     
+        if E2 == sym.Matrix([-1.5,-1.5]):
             cE2=True
         else:
             cE2=False
@@ -203,22 +190,10 @@ class Workshop1:
         print("Simply translate the points that you are given.")
       
     def check3c(self, deformed_corners):
-        if deformed_corners == [[2.5, 1.0],
-                                [-0.5, -1.0],
-                                [-2.5, -1.0],
-                                [0.5, 1.0]]:
-            print("\033[1;32m Correct!")
-            self.q3c = True
-        elif deformed_corners == sym.Matrix([[2.5, 1.0],
+        if deformed_corners == sym.Matrix([[2.5, 1.0],
                                             [-0.5, -1.0],
                                             [-2.5, -1.0],
-                                            [0.5, 1.0]]):
-            print("\033[1;32m Correct!")
-            self.q3c = True
-        elif np.isclose(deformed_corners,np.array([[2.5, 1.0],
-                                            [-0.5, -1.0],
-                                            [-2.5, -1.0],
-                                            [0.5, 1.0]])):
+                                            [0.5, 1.0]]).T:
             print("\033[1;32m Correct!")
             self.q3c = True
         else:
