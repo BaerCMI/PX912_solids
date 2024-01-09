@@ -47,6 +47,7 @@ class Workshop2:
     # Question 2
     def hint2(self,):
         print("Tensor divergence is calculated by calculating the divergence of each row. How can this be implemented? You'll need a for loop. Your answer should return a vector.")
+        print("The body force should be defined as a single column sympy matrix.")
         
     def check2(self, div_sigma, b):
         rho, g, x_1, x_2, x_3 = sym.symbols('rho g x_1 x_2 x_3')
@@ -59,7 +60,7 @@ class Workshop2:
         
     # Question 3
     def hint3a(self,):
-        print("If you haven't written a routine for the infinitesimal strain yet, feel free to use mine: tools.infinitesimal_strain(phi,[X_1, X_2].")
+        print("Define the deformation expressions, deformation gradient, and infinitesimal strain tensor. Finally condense the full strain tensor to a vector of unique components in the Voigt format.")
     
     def check3a(self, voigt_eps):
         cond1 = math.isclose(voigt_eps[0], 0.000499999999999945)
@@ -74,10 +75,7 @@ class Workshop2:
             self.q3a = False
 
     def hint3b(self,):
-        print("Check the last page of the lecture notes to remember plane")
-        print("strain and plane stress.) You can represent the multiplication")
-        print("of two matrices using the sym.MatMul(A, B) function. To actually")
-        print("carry out the calculation? Write sym.MatMul(A, B).doit()")
+        print("Check the last page of the lecture notes to remember plane strain and plane stress.")
         
     def check3b(self, cpe, cps):
         cond1 = math.isclose(cpe[0], 3901234.56790080)
@@ -102,15 +100,15 @@ class Workshop2:
     
     # Question 4
     def hint4a(self,):
-        print("Use xi.diff() like usual. What variable are you differentiating by this time?")
+        print("Use .diff() like usual. What variable are you differentiating by this time?")
     def check4a(self,v1, v2, v3):
         t = sym.symbols('t')
-        X = sym.Function('X')(t)
-        Y = sym.Function('Y')(t)
-        Z = sym.Function('Z')(t)
-        cond1 = (v1 == 4*sym.Derivative(X, t))
-        cond2 = (v2 == sym.Derivative(Y, t))
-        cond3 = (v3 == sym.Derivative(Z, t))
+        X_1 = sym.Function('X_1')(t)
+        X_2 = sym.Function('X_2')(t)
+        X_3 = sym.Function('X_3')(t)
+        cond1 = (v1 == 4*sym.Derivative(X_1, t))
+        cond2 = (v2 == sym.Derivative(X_2, t))
+        cond3 = (v3 == sym.Derivative(X_3, t))
         
         if cond1:
             if cond2:
@@ -133,12 +131,12 @@ class Workshop2:
         print("Do you really need to calculate the second component of this expression? Why or why not?")
     def check4b(self, a1, a2, a3):
         t = sym.symbols('t')
-        X = sym.Function('X')(t)
-        Y = sym.Function('Y')(t)
-        Z = sym.Function('Z')(t)
-        cond1 = (a1 == 4*sym.Derivative(X, (t, 2)))
-        cond2 = (a2 == sym.Derivative(Y, (t, 2)))
-        cond3 = (a3 == sym.Derivative(Z, (t, 2)))
+        X_1 = sym.Function('X_1')(t)
+        X_2 = sym.Function('X_2')(t)
+        X_3 = sym.Function('X_3')(t)
+        cond1 = (a1 == 4*sym.Derivative(X_1, (t, 2)))
+        cond2 = (a2 == sym.Derivative(X_2, (t, 2)))
+        cond3 = (a3 == sym.Derivative(X_3, (t, 2)))
         
         if cond1:
             if cond2:
@@ -156,14 +154,14 @@ class Workshop2:
             self.q4b = False
     
     def hint4c(self,):
-        print("This should be similar to Question 2. You may need to make a change of symbol.")
+        print("This should be similar to Question 2 with a change of symbol.")
     def check4c(self, divt):
         t = sym.symbols('t')
-        X = sym.Function('X')(t)
-        Y = sym.Function('Y')(t)
-        Z = sym.Function('Z')(t)
+        X_1 = sym.Function('X_1')(t)
+        X_2 = sym.Function('X_2')(t)
+        X_3 = sym.Function('X_3')(t)
         
-        if divt == Matrix([[0], [10*Y], [-18*Z]]):
+        if divt == Matrix([[0], [10*X_2], [-18*X_3]]):
             print("\033[1;32m Correct!")
             self.q4c = True
         else:
@@ -176,12 +174,12 @@ class Workshop2:
         print("Check the form of Newton's second law and arrange all parts of the expression to equal zero.")
     def check4d(self,funx, funy, funz):
         t = sym.symbols('t')
-        X = sym.Function('X')(t)
-        Y = sym.Function('Y')(t)
-        Z = sym.Function('Z')(t)
-        cond1 = (funx == sym.Derivative(X, t) + 4*sym.Derivative(X, (t, 2)))
-        cond2 = (funy == -10*Y + 2*sym.Derivative(Y, t) + sym.Derivative(Y, (t, 2)))
-        cond3 = (funz == 18*Z + 5*sym.Derivative(Z, t) + sym.Derivative(Z, (t, 2)))
+        X_1 = sym.Function('X_1')(t)
+        X_2 = sym.Function('X_2')(t)
+        X_3 = sym.Function('X_3')(t)
+        cond1 = (funx == 4*sym.Derivative(X_1, t) + 4*sym.Derivative(X_1, (t, 2)))
+        cond2 = (funy == -10*X_2 + 2*sym.Derivative(X_2, t) + sym.Derivative(X_2, (t, 2)))
+        cond3 = (funz == 18*X_3 + 5*sym.Derivative(X_3, t) + sym.Derivative(X_3, (t, 2)))
         
         if cond1:
             if cond2:
@@ -190,13 +188,13 @@ class Workshop2:
                     print("Well done for completing the question. Excellent work!")
                     self.q4d = True
                 else:
-                    print("\033[0;31m Incorrect. Check your answer for funx.")
+                    print("\033[0;31m Incorrect. Check your answer for funz.")
                     self.q4d = False
             else:
                 print("\033[0;31m Incorrect. Check your answer for funy.")
                 self.q4d = False
         else:
-            print("\033[0;31m Incorrect. Check your answer for funy.")
+            print("\033[0;31m Incorrect. Check your answer for funx.")
             self.q4d = False        
     
     
