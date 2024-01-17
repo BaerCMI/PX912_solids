@@ -177,9 +177,12 @@ class Workshop2:
         X_1 = sym.Function('X_1')(t)
         X_2 = sym.Function('X_2')(t)
         X_3 = sym.Function('X_3')(t)
-        cond1 = (funx == 4*sym.Derivative(X_1, t) + 4*sym.Derivative(X_1, (t, 2)))
-        cond2 = (funy == -10*X_2 + 2*sym.Derivative(X_2, t) + sym.Derivative(X_2, (t, 2)))
-        cond3 = (funz == 18*X_3 + 5*sym.Derivative(X_3, t) + sym.Derivative(X_3, (t, 2)))
+        cond1 = ((funx == 4*sym.Derivative(X_1, t) + 4*sym.Derivative(X_1, (t, 2))) or \
+          (funx == -4*sym.Derivative(X_1, t) - 4*sym.Derivative(X_1, (t, 2))))
+        cond2 = ((funy == -10*X_2 + 2*sym.Derivative(X_2, t) + sym.Derivative(X_2, (t, 2))) or \
+          (funy == 10*X_2 - 2*sym.Derivative(X_2, t) - sym.Derivative(X_2, (t, 2)))) 
+        cond3 = ((funz == 18*X_3 + 5*sym.Derivative(X_3, t) + sym.Derivative(X_3, (t, 2))) or \
+          (funz == -18*X_3 - 5*sym.Derivative(X_3, t) - sym.Derivative(X_3, (t, 2))))
         
         if cond1:
             if cond2:
