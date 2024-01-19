@@ -2,6 +2,7 @@ import sympy as sym
 import numpy as np
 import math
 from sympy.matrices import Matrix, eye, zeros, ones, diag, MatMul
+import copy
 
 class Workshop3:
     def __init__(self, ):
@@ -25,10 +26,13 @@ class Workshop3:
         solution = [0.5*x**2 - 0.5*x, 
                    1.0 - x**2, 
                    0.5*x**2 + 0.5*x]
+        altsolution = [sym.Rational(1,2)*x**2 - sym.Rational(1,2)*x, 
+                   1 - x**2, 
+                   sym.Rational(1,2)*x**2 + sym.Rational(1,2)*x]
         
         incorrect = []
         for i in range(3):
-            if answer[i] != solution[i]:
+            if answer[i] != solution[i] and answer[i] != altsolution[i]:
                 incorrect.append(name[i])
                 
         if len(incorrect) == 0:
@@ -41,10 +45,10 @@ class Workshop3:
 
             
     def hint1b(self,):
-        print("The correct format for the plotting is: plot1 = sym.plotting.plot(y_i, (x,min,max)") 
+        print("The correct format for the plotting is: p = sym.plotting.plot(y_1, y_2, y_3, (x,min,max))") 
     
     def hint1c(self,):
-        print("The correct format for the integration is: sym.integrate(integrand, (x, 0, L)).")
+        print("The correct format for the integration is: integrand.integrate((x,0,L)) or sym.integrate(integrand, (x, 0, L)).")
     def check1c(self, k):
         A, E, L = sym.symbols('A E L')
         solution = Matrix([[0.333333333333333*A*E*L**3 - 0.5*A*E*L**2 + 0.25*A*E*L,
@@ -56,7 +60,7 @@ class Workshop3:
                             [0.333333333333333*A*E*L**3 - 0.25*A*E*L,
                              -0.666666666666667*A*E*L**3 - 0.5*A*E*L**2,
                              0.333333333333333*A*E*L**3 + 0.5*A*E*L**2 + 0.25*A*E*L]])
-        
+        korig = copy.deepcopy(k)
         for a in sym.preorder_traversal(k):
             if isinstance(a, sym.Float):
                 k = k.subs(a, round(a, 1))
@@ -68,6 +72,19 @@ class Workshop3:
             print("\033[1;32m Correct!")
             self.q1c = True
         else:
+          solution = Matrix([[sym.Rational(1,3)*A*E*L**3 - sym.Rational(1,2)*A*E*L**2 + sym.Rational(1,4)*A*E*L,
+                              -sym.Rational(2,3)*A*E*L**3 + sym.Rational(1,2)*A*E*L**2,
+                              sym.Rational(1,3)*A*E*L**3 - sym.Rational(1,4)*A*E*L],
+                             [-sym.Rational(2,3)*A*E*L**3 + sym.Rational(1,2)*A*E*L**2,
+                              sym.Rational(4,3)*A*E*L**3,
+                              -sym.Rational(2,3)*A*E*L**3 - sym.Rational(1,2)*A*E*L**2],
+                              [sym.Rational(1,3)*A*E*L**3 - sym.Rational(1,4)*A*E*L,
+                               -sym.Rational(2,3)*A*E*L**3 - sym.Rational(1,2)*A*E*L**2,
+                               sym.Rational(1,3)*A*E*L**3 + sym.Rational(1,2)*A*E*L**2 + sym.Rational(1,4)*A*E*L]])
+          if korig == solution:
+              print("\033[1;32m Correct!")
+              self.q1c = True
+          else: 
             print(f"\033[0;31m Incorrect.")
             self.q1c = False
 
@@ -76,8 +93,8 @@ class Workshop3:
     # -----------------------------------------------------------------------
     # Problem 2
     def hint2a(self,):
-        print("Use np.ix_(global_indices[i], global_indices[i]) to find the correct indices of the")
-        print("global K matrix that need to be filled with the entries of the smaller K matrices.")
+        print("Use np.ix_(indices, indices) to find the correct indices of the")
+        print("global K matrix that need to be filled with the sum of entries of the smaller K matrices.")
         
     def check2a(self, K_global):
         answer = [[ 200000.,       0., -200000.],
@@ -92,7 +109,7 @@ class Workshop3:
 
 
     def hint2b(self,):
-        print("What portion of the matrix do you need? That is, what index of K_global corresponds to node where a force is acting?")
+        print("What portion of the matrix do you need? That is, what index of K_global corresponds to the node where a force is acting? What do you know about walls?")
     def check2b(self, d_3):
         if d_3 == 4e-05:
             print("\033[1;32m Correct!")
