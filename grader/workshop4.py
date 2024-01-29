@@ -21,16 +21,12 @@ class Workshop4:
     # Problem 1 ----------------------------------------------------------------------------------
     def hint1a(self,):
         print("How many Gauss points do you need in this case?")
-        print("Weights are by far the most annoying thing about the Galerkin method.")
-        print("Normally, these are coded within FEA software. For now, use the weight values")
+        print("Normally, weights are coded within FEA software. For now, use the weight values")
         print("that you can find in the lecture notes.")
         
     def check1a(self, numerical, exact):
-        if np.round(numerical, 5) == 1.73333:
-            if str(exact) == "26/15":
-                print("\033[1;32m Correct!")
-                self.q1a = True
-            elif exact == 26/15:
+        if np.isclose(numerical,26/15):
+            if np.isclose(numerical,26/15):
                 print("\033[1;32m Correct!")
                 self.q1a = True
             else:
@@ -41,15 +37,12 @@ class Workshop4:
             self.q1a = False
 
     def hint1b(self,):
-        print("Here you also need to condier the conversion from pysical to natrual")
-        print("coordinates and multuply the integral by the Jacobian. The equations ")
+        print("Here you also need to consider the conversion from physical to natural")
+        print("coordinates and multiply the integral by the Jacobian. The equations ")
         print("for this can be found in the lecture notes.")           
     def check1b(self, numerical, exact):
-        if np.round(numerical, 5) == 25.33333:
-            if str(exact) == "76/3":
-                print("\033[1;32m Correct!")
-                self.q1b = True
-            elif exact == 76/3:
+        if np.isclose(numerical,76/3):
+            if np.isclose(exact,76/3):
                 print("\033[1;32m Correct!")
                 self.q1b = True
             else:
@@ -74,8 +67,7 @@ class Workshop4:
         print("differentiated with resepect to.")
 
     def hint2aiv(self,):
-        print("Calculate the element Jacobian matrix using diff_shape function defined above.")
-        print("Also determine the inverse and determinant using M.inv() and M.det()")
+        print("Determine the inverse and determinant using M.inv() and M.det()")
     
     def hint2av(self,):
         print("A general form of the strain-displacement matric for a four-node 2D element")
