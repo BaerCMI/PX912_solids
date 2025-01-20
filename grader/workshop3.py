@@ -48,18 +48,29 @@ class Workshop3:
         print("The correct format for the plotting is: p = sym.plotting.plot(y_1, y_2, y_3, (x,min,max))") 
     
     def hint1c(self,):
-        print("The correct format for the integration is: integrand.integrate((x,0,L)) or sym.integrate(integrand, (x, 0, L)).")
+        print("The correct format for the integration is: integrand.integrate((x,-1,1)) or sym.integrate(integrand, (x, -1, 1)).")
     def check1c(self, k):
-        A, E, L = sym.symbols('A E L')
-        solution = Matrix([[0.333333333333333*A*E*L**3 - 0.5*A*E*L**2 + 0.25*A*E*L,
-                            -0.666666666666667*A*E*L**3 + 0.5*A*E*L**2,
-                            0.333333333333333*A*E*L**3 - 0.25*A*E*L],
-                           [-0.666666666666667*A*E*L**3 + 0.5*A*E*L**2,
-                            4*A*E*L**3/3,
-                            -0.666666666666667*A*E*L**3 - 0.5*A*E*L**2],
-                            [0.333333333333333*A*E*L**3 - 0.25*A*E*L,
-                             -0.666666666666667*A*E*L**3 - 0.5*A*E*L**2,
-                             0.333333333333333*A*E*L**3 + 0.5*A*E*L**2 + 0.25*A*E*L]])
+        E = sym.symbols('E')
+        solution = Matrix([[1.16666666666666667*E,
+                            -1.333333333333333*E,
+                            0.1666666666666667*E],
+                           [-1.333333333333333*E,
+                            2.6666666666666667*E,
+                            -1.333333333333333*E],
+                            [0.1666666666666667*E,
+                             -1.333333333333333*E,
+                             1.16666666666666667*E]])
+        
+        sym_solution = Matrix([[sym.Rational(7,6)*E,
+                                -sym.Rational(4,3)*E,
+                                sym.Rational(1,6)*E],
+                               [-sym.Rational(4,3)*E,
+                                sym.Rational(8,3)*E,
+                                -sym.Rational(4,3)*E],
+                               [sym.Rational(1,6)*E,
+                                -sym.Rational(4,3)*E,
+                                sym.Rational(7,6)*E]])
+            
         korig = copy.deepcopy(k)
         for a in sym.preorder_traversal(k):
             if isinstance(a, sym.Float):
@@ -71,25 +82,14 @@ class Workshop3:
         if k == solution:
             print("\033[1;32m Correct!")
             self.q1c = True
+        elif korig == sym_solution:
+            print("\033[1;32m Correct!")
+            self.q1c = True     
         else:
-          solution = Matrix([[sym.Rational(1,3)*A*E*L**3 - sym.Rational(1,2)*A*E*L**2 + sym.Rational(1,4)*A*E*L,
-                              -sym.Rational(2,3)*A*E*L**3 + sym.Rational(1,2)*A*E*L**2,
-                              sym.Rational(1,3)*A*E*L**3 - sym.Rational(1,4)*A*E*L],
-                             [-sym.Rational(2,3)*A*E*L**3 + sym.Rational(1,2)*A*E*L**2,
-                              sym.Rational(4,3)*A*E*L**3,
-                              -sym.Rational(2,3)*A*E*L**3 - sym.Rational(1,2)*A*E*L**2],
-                              [sym.Rational(1,3)*A*E*L**3 - sym.Rational(1,4)*A*E*L,
-                               -sym.Rational(2,3)*A*E*L**3 - sym.Rational(1,2)*A*E*L**2,
-                               sym.Rational(1,3)*A*E*L**3 + sym.Rational(1,2)*A*E*L**2 + sym.Rational(1,4)*A*E*L]])
-          if korig == solution:
-              print("\033[1;32m Correct!")
-              self.q1c = True
-          else: 
             print(f"\033[0;31m Incorrect.")
             self.q1c = False
-
-
-    
+        
+        
     # -----------------------------------------------------------------------
     # Problem 2
     def hint2a(self,):
@@ -111,7 +111,7 @@ class Workshop3:
     def hint2b(self,):
         print("What portion of the matrix do you need? That is, what index of K_global corresponds to the node where a force is acting? What do you know about walls?")
     def check2b(self, d_3):
-        if d_3 == 4e-05:
+        if d_3 == -4e-05:
             print("\033[1;32m Correct!")
             self.q2b = True
         else:
@@ -122,7 +122,7 @@ class Workshop3:
     def hint2c(self,):
         print("For this we have to multiply the portion of the global stiffness matrix that we need and the displacement vector that we have already found.") 
     def check2c(self, R_F):
-        solution = [-8., -2.]
+        solution = [8., 2.]
         if np.array_equal(solution, R_F):
             print("\033[1;32m Correct!")
             self.q2c = True
@@ -142,7 +142,7 @@ class Workshop3:
                 "sigma_3"]
         
         answer = [eps_1, eps_2, eps_3, sigma_1, sigma_2, sigma_3]
-        solution = [0.0004, 0.0004, -0.0008, 4000000.0, 4000000.0, -4000000.0]
+        solution = [-0.0004, -0.0004, 0.0008, -4000000.0, -4000000.0, 4000000.0]
         incorrect = []
         
         for i in range(6):
