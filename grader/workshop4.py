@@ -9,6 +9,7 @@ class Workshop4:
 
         self.q1a = False
         self.q1b = False
+        self.q1c = False
 
         self.q2b  = False
         self.q2c = False
@@ -52,6 +53,22 @@ class Workshop4:
             print(f"\033[0;31m Incorrect. Check your numerical calculation.")
             self.q1b = False
     
+    def hint1c(self,):
+        print("q sets the number of integration points.")
+        print("To obtain the 2D weights, the weigts obtained from np.polynomial")
+        print("need to be multiplied.")
+    def check1c(self, numerical, exact):
+        if np.isclose(numerical,16/(np.pi**2)):
+            if np.isclose(exact,16/(np.pi**2)):
+                print("\033[1;32m Correct!")
+                self.q1c = True
+            else:
+                print(f"\033[0;31m Incorrect. Check your exact calculation.")
+                self.q1c = False
+        else:
+            print(f"\033[0;31m Incorrect. Check your numerical calculation.")
+            self.q1c = False
+
     # Problem 2 ----------------------------------------------------------------------------------
     def hint2ai(self,):
         print("The 4 shape functions have the same form, but differ by the signs of xi and eta")
