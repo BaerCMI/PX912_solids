@@ -158,35 +158,35 @@ class Workshop1:
             print("\033[0;31m Incorrect.")
             self.q3a = False   
      
-    def hint3b(self):
-        print("Isochoric = isos + khora = equal + space.")
-        print("What does it mean for a a transformation to have equal space?")
-        print("Note that in this situation, space is volume.")
+    # def hint3b(self):
+    #     print("Isochoric = isos + khora = equal + space.")
+    #     print("What does it mean for a a transformation to have equal space?")
+    #     print("Note that in this situation, space is volume.")
 
-    def check3b(self, isochoric):
-        if isochoric == True:
-            print("\033[1;32m Correct!")
-            self.q3b = True           
-        else:
-            print("\033[0;31m Incorrect.")
-            self.q3b = False   
-            
-
-    # def hint3c(self):
-    #     print("This should be very similar to a previous problem.")
-    #     print("Simply translate the points that you are given.")
-      
-    # def check3c(self, deformed_corners):
-    #     if deformed_corners == sym.Matrix([[2.5, 1.0],
-    #                                         [-0.5, -1.0],
-    #                                         [-2.5, -1.0],
-    #                                         [0.5, 1.0]]).T:
+    # def check3b(self, isochoric):
+    #     if isochoric == True:
     #         print("\033[1;32m Correct!")
-    #         self.q3c = True
+    #         self.q3b = True           
     #     else:
     #         print("\033[0;31m Incorrect.")
-    #         print("Note: if you've modified the order of the square_corners list, you may be getting an error due to the order of your points.")
-    #         self.q3c = False    
+    #         self.q3b = False   
+            
+
+    def hint3b(self):
+        print("This should be very similar to a previous problem.")
+        print("Simply translate the points that you are given.")
+      
+    def check3b(self, deformed_corners):
+        if deformed_corners == sym.Matrix([[2.5, 1.0],
+                                            [-0.5, -1.0],
+                                            [-2.5, -1.0],
+                                            [0.5, 1.0]]).T:
+            print("\033[1;32m Correct!")
+            self.q3c = True
+        else:
+            print("\033[0;31m Incorrect.")
+            print("Note: if you've modified the order of the square_corners list, you may be getting an error due to the order of your points.")
+            self.q3c = False    
 
 
     # QUESTION 4 ------------------------------------------------------ 
