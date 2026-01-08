@@ -6,7 +6,6 @@ class Workshop1:
     def __init__(self, ):
         self.q1a = False
         self.q1b = False
-        self.q1c = False
 
         self.q2a = False
         self.q2b = False
@@ -14,6 +13,10 @@ class Workshop1:
         
         self.q3a = False
         self.q3b = False
+
+        self.q4b = False
+        self.q4c = False
+        self.q4d = False
         
     # QUESTION 1 ------------------------------------------------------
     def hint1a(self,):
@@ -51,23 +54,7 @@ class Workshop1:
             print("\033[0;31m Incorrect. Check your answer for the deformation gradient.")
             self.q1b = False           
 
-    def hint1c(self,):
-        print("Remember to represent the exponential using SymPy. Otherwise it")
-        print("should be the same as the two previous questions.")        
-    def check1c(self,F_c, homogeneous):
-        X_1, X_2, X_3 = sym.symbols('X_1 X_2 X_3')
-        if F_c == Matrix([[sym.exp(X_1), 0, 0], [0, 0, -1], [0, 1, 0]]):
-            if homogeneous==False:
-                print("\033[1;32m Correct!")
-                self.q1c = True
-            else:
-                print("\033[0;31m Incorrect. Recall the definition of homogeneity.")
-                self.q1c = False  
-        else:
-            print("\033[0;31m Incorrect. Check your answer for the deformation gradient.")
-            self.q1c = False             
 
-    
     # QUESTION 2 ------------------------------------------------------
     def hint2a(self, ):
         print("The main difference here from above is the number of entries of phi.")
@@ -185,50 +172,112 @@ class Workshop1:
             self.q3b = False   
             
 
-    def hint3c(self):
-        print("This should be very similar to a previous problem.")
-        print("Simply translate the points that you are given.")
+    # def hint3c(self):
+    #     print("This should be very similar to a previous problem.")
+    #     print("Simply translate the points that you are given.")
       
-    def check3c(self, deformed_corners):
-        if deformed_corners == sym.Matrix([[2.5, 1.0],
-                                            [-0.5, -1.0],
-                                            [-2.5, -1.0],
-                                            [0.5, 1.0]]).T:
+    # def check3c(self, deformed_corners):
+    #     if deformed_corners == sym.Matrix([[2.5, 1.0],
+    #                                         [-0.5, -1.0],
+    #                                         [-2.5, -1.0],
+    #                                         [0.5, 1.0]]).T:
+    #         print("\033[1;32m Correct!")
+    #         self.q3c = True
+    #     else:
+    #         print("\033[0;31m Incorrect.")
+    #         print("Note: if you've modified the order of the square_corners list, you may be getting an error due to the order of your points.")
+    #         self.q3c = False    
+
+
+    # QUESTION 4 ------------------------------------------------------ 
+    def hint4a(self):
+        print("Use Matrix.trace() and Matrix.eye(N), where N is ")
+        print("the size of the identity matrix.")
+    
+    def hint4b(self):
+        print("Apply the infinitesimal strain tensor from Q3 to the ")
+        print("function created in 4a.")
+
+    def check4b(self, S):
+        E, alpha, nu = sym.symbols('E alpha nu')
+        if S == sym.Matrix([[0, (0.5*E*alpha)/(nu+1), 0],
+                            [0.5*E*alpha/(nu+1), 0, 0],
+                            [0, 0, 0]]):
             print("\033[1;32m Correct!")
-            self.q3c = True
+            self.q4b = True
+        elif S == sym.Matrix([[0, sym.Rational(1,2)*E*alpha/(nu+1), 0],
+                            [sym.Rational(1,2)*E*alpha/(nu+1), 0, 0],
+                            [0, 0, 0]]):
+            print("\033[1;32m Correct!")
+            self.q4b = True
         else:
             print("\033[0;31m Incorrect.")
-            print("Note: if you've modified the order of the square_corners list, you may be getting an error due to the order of your points.")
-            self.q3c = False                 
+            self.q4b = False
+    
+    def hint4c(self):
+        print("Create a sym.Matrix of the rotation matrix R.")
+        print("Use sym.cos() and sym.sin() for cosine and sine functions.")
+
+    def check4c(self, S_rotated):
+        E, nu, theta = sym.symbols('E nu theta')
+        if S_rotated == sym.Matrix([[E*nu*(2*sym.cos(theta)+1)/((1-2*nu)*(nu+1)) + E*sym.cos(theta)/(nu+1), - (E*sym.sin(theta))/(nu+1), 0],
+                                    [E*sym.sin(theta)/(nu+1), E*nu*(2*sym.cos(theta)+1)/((1-2*nu)*(nu+1)) + E*sym.cos(theta)/(nu+1), 0],
+                                    [0, 0, E*nu*(2*sym.cos(theta)+1)/((1-2*nu)*(nu+1)) + E/(nu+1)]]):
+            print("\033[1;32m Correct!")
+            self.q4c = True
+        else:
+            print("\033[0;31m Incorrect.")
+            self.q4c = False
+
+    def hint4d(self):
+        print("Apply the expr.Expr.series(x, xo, n) method to S11.")
+        print("Here, x is the variable you want to expand about, ")
+        print("xo is the value around which x is calculated, ")
+        print("and n is the order of the expansion.")
+    
+    def check4d(self, S11_exp):
+        E, nu, theta = sym.symbols('E nu theta')
+        if S11_exp == E/(nu+1)+(3*E*nu)/((1-2*nu)*(nu+1)) + sym.O(theta**2):
+            print("\033[1;32m Correct!")
+            self.q4d = True
+        else:
+            print("\033[0;31m Incorrect.")
+            self.q4d = False
+
+
     # RESULTS    ------------------------------------------------------
     
     def results(self):
         performance = [self.q1a,
-                       self.q1b, 
-                       self.q1c,  
+                       self.q1b,  
                        self.q2a,
                        self.q2b,
                        self.q2c, 
                        self.q3a, 
                        self.q3b, 
-                       self.q3c]
+                       #self.q3c,
+                       self.q4b,
+                       self.q4c,
+                       self.q4d]
         
         names = ["Question 1a",
                  "Question 1b",
-                 "Question 1c",
                  "Question 2a",
                  "Question 2b",
                  "Question 2c",
                  "Question 3a",
                  "Question 3b",
-                 "Question 3c"]
+                # "Question 3c",
+                 "Question 4b",
+                 "Question 4c",
+                 "Question 4d"]
         
-        coupled = [(performance[i], names[i]) for i in range(9)]
+        coupled = [(performance[i], names[i]) for i in range(len(performance))]
         
         total_score = sum(performance)
         
-        print(f"Your score for this assignment: {total_score}/9")
-        if total_score == 9:
+        print(f"Your score for this assignment: {total_score}/10")
+        if total_score == 10:
             print("Excellent work!")
         else:
             print("The following questions have yet to be answered correctly:")

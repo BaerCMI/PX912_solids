@@ -1,233 +1,190 @@
 import sympy as sym
 import numpy as np
-import math
 from sympy.matrices import Matrix, eye, zeros, ones, diag, MatMul
 
 class Workshop2:
+    print("Library Loaded!")
     def __init__(self, ):
-        print("Grader Library Loaded!")
         self.q1a = False
         self.q1b = False
 
-        self.q2 = False
+        self.q2a = False
+        self.q2b = False
+        self.q2c = False
         
         self.q3a = False
         self.q3b = False
         
-        self.q4a = False
-        self.q4b = False
-        self.q4c = False
-        self.q4d = False
-        
-    # Question 1
+    # QUESTION 1 ------------------------------------------------------
     def hint1a(self,):
-        print("Write each traction as a vector, then use them to build the stress tensor. What should zero traction along a direction look like?")  
-        
-    def check1a(self, stress):
-        T_1, T_2 = sym.symbols('T_1 T_2')
-        if stress == Matrix([[T_1, 0, 0], [0, T_2, 0], [0, 0, 0]]):
-            print("\033[1;32m Correct!")
-            self.q1a = True
-        else:
-            print("\033[0;31m Incorrect.")
-            self.q1a = False    
-
-    def hint1b(self,):
-        print("This is a simpler case of the previous question. Use the same approach.")
-        
-    def check1b(self,stress):
-        T = sym.symbols('T')
-        if stress == Matrix([[T, 0, 0], [0, T, 0], [0, 0, 0]]):
-            print("\033[1;32m Correct!")
-            self.q1b = True
-        else:
-            print("\033[0;31m Incorrect.")
-            self.q1a = False   
-            
-    # Question 2
-    def hint2(self,):
-        print("Tensor divergence is calculated by calculating the divergence of each row. How can this be implemented? You'll need a for loop. Your answer should return a vector.")
-        print("The body force should be defined as a single column sympy matrix.")
-        
-    def check2(self, div_sigma, b):
-        rho, g, x_1, x_2, x_3 = sym.symbols('rho g x_1 x_2 x_3')
-        if (div_sigma + b) == Matrix([[0], [0], [0]]):
-            print("\033[1;32m Correct!")
-            self.q2 = True
-        else:
-            print("\033[0;31m Incorrect.")
-            self.q2 = False
-        
-    # Question 3
-    def hint3a(self,):
-        print("Define the deformation expressions, deformation gradient, and infinitesimal strain tensor. Finally condense the full strain tensor to a vector of unique components in the Voigt format.")
+        print("Consider where the shape function has to take the values 1 and 0.")
+        print("Inbetween the nodel the shape function is linear.")
     
-    def check3a(self, voigt_eps):
-        cond1 = math.isclose(voigt_eps[0], 0.000499999999999945)
-        cond2 = math.isclose(voigt_eps[1], 0.000199999999999978)
-        cond3 = math.isclose(voigt_eps[2], 0.00100000000000000)
-                
-        if cond1 and cond2 and cond3:
-            print("\033[1;32m Correct!")
-            self.q3a = True
-        else:
-            print("\033[0;31m Incorrect.")
-            self.q3a = False
-
-    def hint3b(self,):
-        print("Check the last page of the lecture notes to remember plane strain and plane stress.")
-        
-    def check3b(self, cpe, cps):
-        cond1 = math.isclose(cpe[0], 3901234.56790080)
-        cond2 = math.isclose(cpe[1], 3012345.67901201)
-        cond3 = math.isclose(cpe[2], 1481481.48148148)
-        cond4 = math.isclose(cps[0], 2598290.59829031)
-        cond5 = math.isclose(cps[1], 1709401.70940152)
-        cond6 = math.isclose(cps[2], 1481481.48148148)        
-                
-        if cond1 and cond2 and cond3:
-            if cond4 and cond5 and cond6:
+    def check1a(self, N1, N2):
+        X = sym.symbols('X')
+        h = sym.Symbol('h', positive=True)
+        if N1==sym.Piecewise((X/h, (0 <= X) & (X < h)), (2-X/h, (h <= X) & (X < 2*h)), (0, True)):
+            if N2==sym.Piecewise((X/h-1, (h <= X) & (X < 2*h)), (3-X/h, (2*h <= X) & (X < 3*h)), (0, True)):
                 print("\033[1;32m Correct!")
-                self.q3b = True
+                self.q1a = True
             else:
-                print("\033[0;31m Incorrect. Check your answer for plane stress.")
-                self.q3b = False
-
+                print("\033[0;31m Incorrect. Check N2.")
+                self.q1a = False
         else:
-            print("\033[0;31m Incorrect. Check your answer for plane strain.")
-            self.q3b = False
-
+            print("\033[0;31m Incorrect. Check N1.")
+            self.q1a = False
     
-    # Question 4
-    def hint4a(self,):
-        print("Use .diff() like usual. What variable are you differentiating by this time?")
-    def check4a(self,v1, v2, v3):
-        t = sym.symbols('t')
-        X_1 = sym.Function('X_1')(t)
-        X_2 = sym.Function('X_2')(t)
-        X_3 = sym.Function('X_3')(t)
-        cond1 = (v1 == 4*sym.Derivative(X_1, t))
-        cond2 = (v2 == sym.Derivative(X_2, t))
-        cond3 = (v3 == sym.Derivative(X_3, t))
-        
-        if cond1:
-            if cond2:
-                if cond3:
-                    print("\033[1;32m Correct!")
-                    self.q4a = True
-                else:
-                    print("\033[0;31m Incorrect. Check your answer for v3.")
-                    self.q4a = False
+    def hint1b(self,):
+        print("Use function.diff(X)to dufferentiate with respect to X.")
+
+    def check1b(self, dN1, dN2):
+        X = sym.symbols('X')
+        h = sym.Symbol('h', positive=True)
+        if dN1==sym.Piecewise((1/h, (0 <= X) & (X < h)), (-1/h, (h <= X) & (X < 2*h)), (0, True)):
+            if dN2==sym.Piecewise((1/h, (h <= X) & (X < 2*h)), (-1/h, (2*h <= X) & (X < 3*h)), (0, True)):
+                print("\033[1;32m Correct!")
+                self.q1b = True
             else:
-                print("\033[0;31m Incorrect. Check your answer for v2.")
-                self.q4a = False
+                print("\033[0;31m Incorrect. Check dN2.")
+                self.q1b = False
         else:
-            print("\033[0;31m Incorrect. Check your answer for v1.")
-            self.q4a = False
-
-
+            print("\033[0;31m Incorrect. Check dN1.")
+            self.q1b = False       
     
-    def hint4b(self,):
-        print("Do you really need to calculate the second component of this expression? Why or why not?")
-    def check4b(self, a1, a2, a3):
-        t = sym.symbols('t')
-        X_1 = sym.Function('X_1')(t)
-        X_2 = sym.Function('X_2')(t)
-        X_3 = sym.Function('X_3')(t)
-        cond1 = (a1 == 4*sym.Derivative(X_1, (t, 2)))
-        cond2 = (a2 == sym.Derivative(X_2, (t, 2)))
-        cond3 = (a3 == sym.Derivative(X_3, (t, 2)))
-        
-        if cond1:
-            if cond2:
-                if cond3:
-                    print("\033[1;32m Correct!")
-                    self.q4b = True
-                else:
-                    print("\033[0;31m Incorrect. Check your answer for a3.")
-                    self.q4b = False
-            else:
-                print("\033[0;31m Incorrect. Check your answer for a2.")
-                self.q4b = False
-        else:
-            print("\033[0;31m Incorrect. Check your answer for a1.")
-            self.q4b = False
+    # QUESTION 2 ------------------------------------------------------
+    def hint2a(self,):
+        print("You need to define a shape function for each of the 6 nodes (5 elements +1).")
+        print("Differentiate the shape functions as before, and use sym.integrate() for the integral.")
+        print("Fill the 6x6 stiffness matrix K according to the equation provided. ")
     
-    def hint4c(self,):
-        print("This should be similar to Question 2 with a change of symbol.")
-    def check4c(self, divt):
-        t = sym.symbols('t')
-        X_1 = sym.Function('X_1')(t)
-        X_2 = sym.Function('X_2')(t)
-        X_3 = sym.Function('X_3')(t)
-        
-        if divt == Matrix([[0], [10*X_2], [-18*X_3]]):
+    def check2a(self, K):
+        h = sym.Symbol('h', positive=True)
+        E = sym.Symbol('E', positive=True)
+
+        if K==sym.Matrix([[E/h, -E/h, 0, 0, 0, 0],
+                          [-E/h, 2*E/h, -E/h, 0, 0, 0],
+                          [0, -E/h, 2*E/h, -E/h, 0, 0],
+                          [0, 0, -E/h, 2*E/h, -E/h, 0],
+                          [0, 0, 0, -E/h, 2*E/h, -E/h],
+                          [0, 0, 0, 0, -E/h, E/h]]):
             print("\033[1;32m Correct!")
-            self.q4c = True
+            self.q2a = True
         else:
             print("\033[0;31m Incorrect.")
-            self.q4c = False
-
-
+            self.q2a = False
     
-    def hint4d(self,):
-        print("Check the form of Newton's second law and arrange all parts of the expression to equal zero.")
-    def check4d(self,funx, funy, funz):
-        t = sym.symbols('t')
-        X_1 = sym.Function('X_1')(t)
-        X_2 = sym.Function('X_2')(t)
-        X_3 = sym.Function('X_3')(t)
-        cond1 = ((funx == 4*sym.Derivative(X_1, t) + 4*sym.Derivative(X_1, (t, 2))) or \
-          (funx == -4*sym.Derivative(X_1, t) - 4*sym.Derivative(X_1, (t, 2))))
-        cond2 = ((funy == -10*X_2 + 2*sym.Derivative(X_2, t) + sym.Derivative(X_2, (t, 2))) or \
-          (funy == 10*X_2 - 2*sym.Derivative(X_2, t) - sym.Derivative(X_2, (t, 2)))) 
-        cond3 = ((funz == 18*X_3 + 5*sym.Derivative(X_3, t) + sym.Derivative(X_3, (t, 2))) or \
-          (funz == -18*X_3 - 5*sym.Derivative(X_3, t) - sym.Derivative(X_3, (t, 2))))
-        
-        if cond1:
-            if cond2:
-                if cond3:
-                    print("\033[1;32m Correct!")
-                    print("Well done for completing the question. Excellent work!")
-                    self.q4d = True
-                else:
-                    print("\033[0;31m Incorrect. Check your answer for funz.")
-                    self.q4d = False
-            else:
-                print("\033[0;31m Incorrect. Check your answer for funy.")
-                self.q4d = False
+    def hint2b(self,):
+        print("Again use sym.integrate() for the integral and the shape functions defined in a).")
+        print("f is a vector of length 6.")
+
+    def check2b(self, f):
+        h = sym.Symbol('h', positive=True)     # Element length
+        rho = sym.Symbol('rho', positive=True) # Density
+        g = sym.Symbol('g', positive=True)     # Gravitational acceleration
+
+        if f==sym.Matrix([g*h*rho/2,
+                          g*h*rho,
+                          g*h*rho,
+                          g*h*rho,
+                          g*h*rho,
+                          g*h*rho/2]):
+            print("\033[1;32m Correct!")
+            self.q2b = True
         else:
-            print("\033[0;31m Incorrect. Check your answer for funx.")
-            self.q4d = False        
+            print("\033[0;31m Incorrect.")
+            self.q2b = False
     
+    def hint2c(self,):
+        print("Pass the reduced stiffness matrix and force vector to sym.linsolve()")
+        print("together with a list of 5 symbols, one for each unknown displacement.")
+
+    def check2c(self, d):
+        h = sym.Symbol('h', positive=True)     # Element length
+        E = sym.Symbol('E', positive=True)     # Young's modulus
+        rho = sym.Symbol('rho', positive=True)
+        g = sym.Symbol('g', positive=True)     # Gravitational acceleration
+
+        if d==sym.FiniteSet(sym.Tuple(9*g*h**2*rho/(2*E), 8*g*h**2*rho/E, 21*g*h**2*rho/(2*E), 12*g*h**2*rho/E, 25*g*h**2*rho/(2*E))):
+            print("\033[1;32m Correct!")
+            self.q2c = True
+        elif d==sym.Matrix([9*g*h**2*rho/(2*E), 8*g*h**2*rho/E, 21*g*h**2*rho/(2*E), 12*g*h**2*rho/E, 25*g*h**2*rho/(2*E)]):
+            print("\033[1;32m Correct!")
+            self.q2c = True
+        else:
+            print("\033[0;31m Incorrect.")
+            self.q2c = False
+        
+
+    # QUESTION 3 ------------------------------------------------------
+    def hint3a(self,):
+        print("Integrate the polynomials from hand or using sym.integrate().")
+
+    def check3a(self, p_exact_integral, q_exact_integral, r_exact_integral):
+        if p_exact_integral==sym.Integer(26) or p_exact_integral==26:
+            if q_exact_integral==sym.Integer(22) or q_exact_integral==22:
+                if r_exact_integral==sym.Integer(393982) or r_exact_integral==393982:
+                    print("\033[1;32m Correct!")
+                    self.q3a = True
+                else:
+                    print("\033[0;31m Incorrect. Check r_exact_integral.")
+                    self.q3a = False
+            else:
+                print("\033[0;31m Incorrect. Check q_exact_integral.")
+                self.q3a = False
+        else:
+            print("\033[0;31m Incorrect. Check p_exact_integral.")
+            self.q3a = False
+    
+    def hint3b(self,):
+        print("Use scipy.integrate.quad() to perform the numerical integration.")
+        print("Then compare the numerical and exact integrals to compute the error.")
+
+    def check3b(self, p_absolute_errors, q_absolute_errors, r_absolute_errors):
+        p_errors = np.array([6.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00])
+        q_errors = np.array([16.0, 0.888888888888889, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00])
+        r_errors = np.array([393834.0, 318511.466, 119088.932, 21985.7130, 2025.20597, 83.3415732, 1.17036129, 0.00237396493, 0.00])
+
+        if np.allclose(p_absolute_errors, p_errors, rtol=1e-5, atol=1e-8):
+            if np.allclose(q_absolute_errors, q_errors, rtol=1e-5, atol=1e-8):
+                if np.allclose(r_absolute_errors, r_errors, rtol=1e-5, atol=1e-8):
+                    print("\033[1;32m Correct!")
+                    self.q3b = True
+                else:
+                    print("\033[0;31m Incorrect. Check r_absolute_error.")
+                    self.q3b = False
+            else:
+                print("\033[0;31m Incorrect. Check q_absolute_error.")
+                self.q3b = False
+        else:
+            print("\033[0;31m Incorrect. Check p_absolute_error.")
+            self.q3b = False
+    
+
+    # RESULTS    ------------------------------------------------------
     
     def results(self):
         performance = [self.q1a,
                        self.q1b,  
-                       self.q2,
+                       self.q2a,
+                       self.q2b,
+                       self.q2c, 
                        self.q3a, 
-                       self.q3b,
-                       self.q4a,
-                       self.q4b,
-                       self.q4c,
-                       self.q4d]
+                       self.q3b]
         
         names = ["Question 1a",
                  "Question 1b",
-                 "Question 2",
+                 "Question 2a",
+                 "Question 2b",
+                 "Question 2c",
                  "Question 3a",
-                 "Question 3b",
-                 "Question 4a",
-                 "Question 4b",
-                 "Question 4c",
-                 "Question 4d"]
+                 "Question 3b"]
         
-        coupled = [(performance[i], names[i]) for i in range(9)]
+        coupled = [(performance[i], names[i]) for i in range(len(performance))]
         
         total_score = sum(performance)
         
-        print(f"Your score for this assignment: {total_score}/9")
-        if total_score == 9:
+        print(f"Your score for this assignment: {total_score}/7")
+        if total_score == 7:
             print("Excellent work!")
         else:
             print("The following questions have yet to be answered correctly:")
