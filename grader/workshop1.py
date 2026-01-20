@@ -66,6 +66,10 @@ class Workshop1:
                           [0, -1.50000000000000]]):
             print("\033[1;32m Correct!")
             self.q2a = True
+        elif F_2 == Matrix([[1, sym.Rational(-3,2)], 
+                          [0, sym.Rational(-3,2)]]):
+            print("\033[1;32m Correct!")
+            self.q2a = True
         else:
             print("\033[0;31m Incorrect.")
             self.q2a = False             
@@ -99,33 +103,37 @@ class Workshop1:
         
     def check2c(self, e1, e2, E1, E2):
         ce1, ce2, cE1, cE2 = False, False, False, False
-        if e1 == sym.Matrix([1.0,0.0]):
+        if e1 == sym.Matrix([[1.0],[0]]):
             ce1=True
         else:
             ce1=False
             print("\033[0;31m def_e1 is incorrect.")
-            self.q2b = False 
+            self.q2c = False 
            
-        if e2 == sym.Matrix([-1.0,-2/3]):
+        if e2 == sym.Matrix([[-1.0],[-2/3]]):
+            ce2=True
+        elif e2 == sym.Matrix([[-1.0],[sym.Rational(-2,3)]]):
             ce2=True
         else:
             ce2=False
             print("\033[0;31m def_e2 is incorrect.")
-            self.q2b = False 
+            self.q2c = False 
                     
-        if E1 == sym.Matrix([1.0,0.0]):
+        if E1 == sym.Matrix([[1.0],[0]]):
             cE1=True
         else:
             cE1=False   
             print("\033[0;31m def_E1 is incorrect.")
-            self.q2b = False 
+            self.q2c = False 
             
-        if E2 == sym.Matrix([-1.5,-1.5]):
+        if E2 == sym.Matrix([[-1.5],[-1.5]]):
+            cE2=True
+        elif E2 == sym.Matrix([[-sym.Rational(3,2)],[-sym.Rational(3,2)]]):
             cE2=True
         else:
             cE2=False
             print("\033[0;31m def_E2 is incorrect.")
-            self.q2b = False 
+            self.q2c = False 
                         
         if ce1 and ce2 and cE1 and cE2:
             print("\033[1;32m Correct!")
@@ -157,19 +165,6 @@ class Workshop1:
         else:
             print("\033[0;31m Incorrect.")
             self.q3a = False   
-     
-    # def hint3b(self):
-    #     print("Isochoric = isos + khora = equal + space.")
-    #     print("What does it mean for a a transformation to have equal space?")
-    #     print("Note that in this situation, space is volume.")
-
-    # def check3b(self, isochoric):
-    #     if isochoric == True:
-    #         print("\033[1;32m Correct!")
-    #         self.q3b = True           
-    #     else:
-    #         print("\033[0;31m Incorrect.")
-    #         self.q3b = False   
             
 
     def hint3b(self):
@@ -182,11 +177,11 @@ class Workshop1:
                                             [-2.5, -1.0],
                                             [0.5, 1.0]]).T:
             print("\033[1;32m Correct!")
-            self.q3c = True
+            self.q3b = True
         else:
             print("\033[0;31m Incorrect.")
             print("Note: if you've modified the order of the square_corners list, you may be getting an error due to the order of your points.")
-            self.q3c = False    
+            self.q3b = False    
 
 
     # QUESTION 4 ------------------------------------------------------ 
@@ -220,9 +215,9 @@ class Workshop1:
 
     def check4c(self, S_rotated):
         E, nu, theta = sym.symbols('E nu theta')
-        if S_rotated == sym.Matrix([[E*nu*(2*sym.cos(theta)+1)/((1-2*nu)*(nu+1)) + E*sym.cos(theta)/(nu+1), - (E*sym.sin(theta))/(nu+1), 0],
-                                    [E*sym.sin(theta)/(nu+1), E*nu*(2*sym.cos(theta)+1)/((1-2*nu)*(nu+1)) + E*sym.cos(theta)/(nu+1), 0],
-                                    [0, 0, E*nu*(2*sym.cos(theta)+1)/((1-2*nu)*(nu+1)) + E/(nu+1)]]):
+        if S_rotated == sym.Matrix([[E*nu*(2.0*sym.cos(theta)-2.0)/((1-2*nu)*(nu+1)) + E*(1.0*sym.cos(theta)-1.0)/(nu+1), 0, 0],
+                                    [0, E*nu*(2.0*sym.cos(theta)-2.0)/((1-2*nu)*(nu+1)) + E*(1.0*sym.cos(theta)-1.0)/(nu+1), 0],
+                                    [0, 0, E*nu*(2.0*sym.cos(theta)-2.0)/((1-2*nu)*(nu+1))]]):
             print("\033[1;32m Correct!")
             self.q4c = True
         else:
@@ -237,7 +232,7 @@ class Workshop1:
     
     def check4d(self, S11_exp):
         E, nu, theta = sym.symbols('E nu theta')
-        if S11_exp == E/(nu+1)+(3*E*nu)/((1-2*nu)*(nu+1)) + sym.O(theta**2):
+        if S11_exp == sym.O(theta**2):
             print("\033[1;32m Correct!")
             self.q4d = True
         else:
@@ -255,7 +250,6 @@ class Workshop1:
                        self.q2c, 
                        self.q3a, 
                        self.q3b, 
-                       #self.q3c,
                        self.q4b,
                        self.q4c,
                        self.q4d]
@@ -267,7 +261,6 @@ class Workshop1:
                  "Question 2c",
                  "Question 3a",
                  "Question 3b",
-                # "Question 3c",
                  "Question 4b",
                  "Question 4c",
                  "Question 4d"]
